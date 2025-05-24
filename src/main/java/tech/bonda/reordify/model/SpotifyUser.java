@@ -1,8 +1,8 @@
-package tech.bonda.reordify.models;
+package tech.bonda.reordify.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import tech.bonda.reordify.common.models.UUIDEntity;
+import tech.bonda.reordify.model.common.UUIDEntity;
 
 @Entity
 @Getter
@@ -17,6 +17,11 @@ public class SpotifyUser extends UUIDEntity {
 
     private String displayName;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
     private SpotifyToken token;
 }

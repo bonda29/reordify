@@ -1,4 +1,4 @@
-package tech.bonda.reordify.common.models;
+package tech.bonda.reordify.model.common;
 
 import jakarta.persistence.*;
 import lombok.Getter;

@@ -1,11 +1,8 @@
-package tech.bonda.reordify.models;
+package tech.bonda.reordify.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
-import tech.bonda.reordify.common.models.UUIDEntity;
+import tech.bonda.reordify.model.common.UUIDEntity;
 
 import java.time.Instant;
 
@@ -17,11 +14,15 @@ import java.time.Instant;
 @AllArgsConstructor
 @Table(name = "spotify_tokens")
 public class SpotifyToken extends UUIDEntity {
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private SpotifyUser user;
 
+    @Column(columnDefinition = "TEXT")
     private String accessToken;
+
+    @Column(columnDefinition = "TEXT")
     private String refreshToken;
+
     private Instant expiry;
 }
