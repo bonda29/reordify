@@ -1,7 +1,6 @@
 version: '3.8'
 
 services:
-  # ---- Database & Migrations ----
   postgres:
     image: postgres:15-alpine
     environment:
@@ -27,21 +26,18 @@ services:
     networks:
       - backend_net
 
-  # ---- Monitoring & Metrics ----
   prometheus:
-    image: prom/prometheus:2.50
+    image: prom/prometheus:latest
     volumes:
-      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./src/main/resources/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./src/main/resources/prometheus/alerts.yml:/etc/prometheus/alerts.yml
-
     ports:
       - "9090:9090"
     networks:
       - monitoring_net
 
   grafana:
-    image: grafana/grafana:10.5
+    image: grafana/grafana-enterprise:latest
     environment:
       GF_SECURITY_ADMIN_PASSWORD: secret
     ports:
