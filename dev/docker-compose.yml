@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  # ---- Database & Migrations ----
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: spotify_db
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - backend_net
+
+  flyway:
+    image: flyway/flyway:9
+    command: -url=jdbc:postgresql://postgres:5432/spotify_db \
+      -schemas=public \
+      -user=root \
+      -password=root \
+      migrate
+    volumes:
+      - ./src/main/resources/db/migration:/flyway/sql
+    depends_on:
+      - postgres
+    networks:
+      - backend_net
+
+  # ---- Monitoring & Metrics ----
+  prometheus:
+    image: prom/prometheus:2.50
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./src/main/resources/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./src/main/resources/prometheus/alerts.yml:/etc/prometheus/alerts.yml
+
+    ports:
+      - "9090:9090"
+    networks:
+      - monitoring_net
+
+  grafana:
+    image: grafana/grafana:10.5
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: secret
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - monitoring_net
+
+volumes:
+  pgdata:
+
+networks:
+  backend_net:
+  monitoring_net:
