@@ -1,14 +1,12 @@
-package tech.bonda.reordify.dto;
+package tech.bonda.reordify.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.UUID;
-
 @Data
 @AllArgsConstructor
-public class AuthResponse {
-    private UUID userId;
+public class UserProfileResponse {
     private String spotifyId;
     private String displayName;
+    private String email;
 }

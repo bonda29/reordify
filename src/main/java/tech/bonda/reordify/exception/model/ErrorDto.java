@@ -1,4 +1,4 @@
-package tech.bonda.reordify.dto;
+package tech.bonda.reordify.exception.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

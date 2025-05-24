@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import tech.bonda.reordify.dto.UserProfileResponse;
+import tech.bonda.reordify.dto.response.UserProfileResponse;
 import tech.bonda.reordify.service.SpotifyClientService;
 import se.michaelthelin.spotify.model_objects.specification.User;
 
