@@ -12,8 +12,8 @@ services:
       - JDBC_DATABASE_USERNAME=root
       - JDBC_DATABASE_PASSWORD=root
     depends_on:
-      - postgres
-      - flyway
+      postgres:
+        condition: service_healthy
     networks:
       - backend_net
       - monitoring_net
@@ -34,22 +34,6 @@ services:
     ports:
       - "5432:5432"
 
-  flyway:
-    image: flyway/flyway:latest
-    command:
-      - -url=jdbc:postgresql://postgres:5432/spotify_db
-      - -schemas=public
-      - -user=root
-      - -password=root
-      - -baselineOnMigrate=true
-      - migrate
-    volumes:
-      - ../src/main/resources/db/migration:/flyway/sql
-    depends_on:
-      postgres:
-        condition: service_healthy
-    networks:
-      - backend_net
 
   postgres_exporter:
     image: prometheuscommunity/postgres-exporter:latest
