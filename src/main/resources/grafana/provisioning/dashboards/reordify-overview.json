@@ -1,0 +1,93 @@
+{
+  "id": null,
+  "uid": "reordify-overview",
+  "title": "Reordify Application Overview",
+  "tags": [
+    "reordify"
+  ],
+  "timezone": "browser",
+  "schemaVersion": 27,
+  "version": 0,
+  "refresh": "5s",
+  "panels": [
+    {
+      "type": "graph",
+      "title": "Playlist Creations (5m)",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "expr": "increase(playlist_creations_total[5m])",
+          "legendFormat": "Creations",
+          "refId": "A"
+        }
+      ],
+      "lines": true,
+      "linewidth": 2
+    },
+    {
+      "type": "graph",
+      "title": "Playlist Lookup Latency (95th percentile)",
+      "gridPos": {
+        "x": 12,
+        "y": 0,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(playlist_lookup_latency_seconds_bucket[5m])) by (le))",
+          "legendFormat": "p95 Latency",
+          "refId": "A"
+        }
+      ],
+      "lines": true,
+      "linewidth": 2
+    },
+    {
+      "type": "gauge",
+      "title": "JVM Heap Usage",
+      "gridPos": {
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "expr": "jvm_memory_used_bytes{area=~\"heap\"} / jvm_memory_max_bytes{area=~\"heap\"}",
+          "refId": "A"
+        }
+      ],
+      "minValue": 0,
+      "maxValue": 1,
+      "unit": "percent"
+    },
+    {
+      "type": "gauge",
+      "title": "Active DB Connections",
+      "gridPos": {
+        "x": 12,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "expr": "hikaricp_connections_active",
+          "refId": "A"
+        }
+      ],
+      "minValue": 0,
+      "unit": "none"
+    }
+  ],
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  }
+}

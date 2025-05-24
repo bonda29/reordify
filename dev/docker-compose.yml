@@ -21,13 +21,11 @@ services:
   postgres:
     image: postgres:latest
     environment:
-      POSTGRES_DB: spotify_db
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: root
-    volumes:
-      - pgdata:/var/lib/postgresql/data
+      - POSTGRES_DB=spotify_db
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
     healthcheck:
-      test: [ "CMD", "pg_isready", "-U", "root" ]
+      test: [ "CMD-SHELL", "pg_isready -U root" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -53,6 +51,18 @@ services:
     networks:
       - backend_net
 
+  postgres_exporter:
+    image: prometheuscommunity/postgres-exporter:latest
+    environment:
+      - DATA_SOURCE_NAME=postgresql://root:root@postgres:5432/spotify_db?sslmode=disable
+    ports:
+      - "9187:9187"
+    depends_on:
+      - postgres
+    networks:
+      - backend_net
+      - monitoring_net
+
   prometheus:
     image: prom/prometheus:latest
     volumes:
@@ -64,11 +74,15 @@ services:
       - monitoring_net
 
   grafana:
-    image: grafana/grafana-enterprise:latest
-    environment:
-      GF_SECURITY_ADMIN_PASSWORD: secret
+    image: grafana/grafana:latest
     ports:
       - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana-storage:/var/lib/grafana
+      - ../src/main/resources/grafana/provisioning:/etc/grafana/provisioning
     depends_on:
       - prometheus
     networks:
@@ -76,6 +90,7 @@ services:
 
 volumes:
   pgdata:
+  grafana-storage:
 
 networks:
   backend_net:
