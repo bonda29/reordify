@@ -9,10 +9,11 @@ spring:
     password: root
   jpa:
     hibernate:
-      ddl-auto: none   # use Flyway instead of hibernate DDL
+      ddl-auto: update   # use Flyway instead of hibernate DDL
   flyway:
-    enabled: true
+    enabled: false
     locations: classpath:db/migration
+    default-schema: public
 
 management:
   endpoints:

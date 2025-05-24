@@ -1,4 +1,4 @@
-package tech.bonda.reordify.controller;
+package tech.bonda.reordify.controller.v1;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

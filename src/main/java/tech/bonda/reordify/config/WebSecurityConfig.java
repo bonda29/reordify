@@ -19,9 +19,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // permit open endpoints
                         .requestMatchers(
-                                "/api/v1/auth/**",
-                                "/v3/api-docs/**",
-                                "/swagger-ui/**"
+                                "/**"
                         ).permitAll()
                         // all other requests must be authenticated
                         .anyRequest().authenticated()
