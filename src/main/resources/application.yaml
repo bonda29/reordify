@@ -3,15 +3,18 @@ spring:
     include: secret
   application:
     name: reordify
+
   datasource:
-    url: jdbc:postgresql://localhost:5432/spotify_db
-    username: root
-    password: root
+    url: ${JDBC_DATABASE_URL:jdbc:postgresql://localhost:5432/spotify_db}
+    username: ${JDBC_DATABASE_USERNAME:root}
+    password: ${JDBC_DATABASE_PASSWORD:root}
+
   jpa:
     hibernate:
-      ddl-auto: update   # use Flyway instead of hibernate DDL
+      ddl-auto: none
+
   flyway:
-    enabled: false
+    enabled: true
     locations: classpath:db/migration
     default-schema: public
 

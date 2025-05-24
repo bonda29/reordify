@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.model_objects.credentials.AuthorizationCodeCredentials;
 import tech.bonda.reordify.exception.SpotifyApiException;
+import tech.bonda.reordify.exception.UserNotFoundException;
 import tech.bonda.reordify.model.SpotifyToken;
 import tech.bonda.reordify.model.SpotifyUser;
 import tech.bonda.reordify.repository.SpotifyUserRepository;
@@ -27,7 +28,7 @@ public class SpotifyClientServiceImpl implements SpotifyClientService {
     @SneakyThrows
     public SpotifyApi getApiForUser(UUID userId) {
         SpotifyUser user = userRepo.findById(userId)
-                .orElseThrow(() -> new SpotifyApiException("User not found: " + userId));
+                .orElseThrow(() -> new UserNotFoundException("User not found: " + userId));
         SpotifyToken token = user.getToken();
 
         // Refresh if expired
