@@ -22,5 +22,6 @@ public class ReflectionUtil {
         // Optionally, you can also set the total count if needed
         Field totalField = Paging.class.getDeclaredField("total");
         totalField.setAccessible(true);
+        totalField.set(playlistTracks, tracks.size());
     }
 }
