@@ -19,8 +19,10 @@ public class ReflectionUtil {
         Field segmentsField = Playlist.class.getDeclaredField("tracks");
         segmentsField.setAccessible(true);
         segmentsField.set(playlist, playlistTracks);
-        // Optionally, you can also set the total count if needed
+        // Ensure the total track count in the Paging object reflects the
+        // provided track list size
         Field totalField = Paging.class.getDeclaredField("total");
         totalField.setAccessible(true);
+        totalField.set(playlistTracks, tracks.size());
     }
 }
