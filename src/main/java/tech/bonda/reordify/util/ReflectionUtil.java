@@ -21,5 +21,6 @@ public class ReflectionUtil {
         segmentsField.set(playlist, playlistTracks);
         Field totalField = Paging.class.getDeclaredField("total");
         totalField.setAccessible(true);
+        totalField.set(playlistTracks, tracks.size());
     }
 }
